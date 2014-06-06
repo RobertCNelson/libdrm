@@ -16,6 +16,10 @@ if HAVE_TEGRA
 SUBDIRS += tegra
 endif
 
+if HAVE_ETNAVIV
+SUBDIRS += etnaviv
+endif
+
 if HAVE_LIBUDEV
 SUBDIRS += vbltest
 endif
