@@ -43,9 +43,24 @@ enum etna_pipe_id {
 };
 
 enum etna_param_id {
-	FD_DEVICE_ID,
-	FD_GMEM_SIZE,
-	FD_GPU_ID,
+	ETNA_GPU_MODEL                     = 0x1,
+	ETNA_GPU_REVISION                  = 0x2,
+	ETNA_GPU_FEATURES_0                = 0x3,
+	ETNA_GPU_FEATURES_1                = 0x4,
+	ETNA_GPU_FEATURES_2                = 0x5,
+	ETNA_GPU_FEATURES_3                = 0x6,
+	ETNA_GPU_FEATURES_4                = 0x7,
+
+	ETNA_GPU_STREAM_COUNT              = 0x10,
+	ETNA_GPU_REGISTER_MAX              = 0x11,
+	ETNA_GPU_THREAD_COUNT              = 0x12,
+	ETNA_GPU_VERTEX_CACHE_SIZE         = 0x13,
+	ETNA_GPU_SHADER_CORE_COUNT         = 0x14,
+	ETNA_GPU_PIXEL_PIPES               = 0x15,
+	ETNA_GPU_VERTEX_OUTPUT_BUFFER_SIZE = 0x16,
+	ETNA_GPU_BUFFER_SIZE               = 0x17,
+	ETNA_GPU_INSTRUCTION_COUNT         = 0x18,
+	ETNA_GPU_NUM_CONSTANTS             = 0x19
 };
 
 /* bo flags: */
