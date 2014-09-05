@@ -167,9 +167,9 @@ void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
 {
 	int ret, idx, id = stream->pipe->id;
 	struct etna_bo *etna_bo = NULL, *tmp;
-	struct drm_vivante_gem_submit_cmd *cmd = NULL;
+	struct drm_etnaviv_gem_submit_cmd *cmd = NULL;
 
-	struct drm_vivante_gem_submit req = {
+	struct drm_etnaviv_gem_submit req = {
 			.pipe = stream->pipe->id,
 	};
 
@@ -190,7 +190,7 @@ void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
 	req.bos = VOID2U64(stream->bos);
 	req.nr_bos = stream->nr_bos;
 
-	ret = drmCommandWriteRead(stream->pipe->dev->fd, DRM_VIVANTE_GEM_SUBMIT,
+	ret = drmCommandWriteRead(stream->pipe->dev->fd, DRM_ETNAVIV_GEM_SUBMIT,
 			&req, sizeof(req));
 
 	if (ret) {
@@ -214,7 +214,7 @@ void etna_cmd_stream_finish(struct etna_cmd_stream *stream)
 
 void etna_cmd_stream_reloc(struct etna_cmd_stream *stream, const struct etna_reloc *r)
 {
-	struct drm_vivante_gem_submit_reloc *reloc;
+	struct drm_etnaviv_gem_submit_reloc *reloc;
 	uint32_t idx = APPEND(stream, relocs);
 	uint32_t addr;
 

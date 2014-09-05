@@ -82,13 +82,13 @@ struct etna_bo *etna_bo_new(struct etna_device *dev,
 {
 	struct etna_bo *bo = NULL;
 
-	struct drm_vivante_gem_new req = {
+	struct drm_etnaviv_gem_new req = {
 			.size = size,
 			.flags = flags,
 	};
 
 	int ret;
-	ret = drmCommandWriteRead(dev->fd, DRM_VIVANTE_GEM_NEW,
+	ret = drmCommandWriteRead(dev->fd, DRM_ETNAVIV_GEM_NEW,
 			&req, sizeof(req));
 	if (ret)
 		return NULL;
@@ -109,10 +109,10 @@ struct etna_bo * etna_bo_ref(struct etna_bo *bo)
 /* get buffer info */
 static int get_buffer_info(struct etna_bo *bo)
 {
-	struct drm_vivante_gem_info req = {
+	struct drm_etnaviv_gem_info req = {
 			.handle = bo->handle,
 	};
-	int ret = drmCommandWriteRead(bo->dev->fd, DRM_VIVANTE_GEM_INFO,
+	int ret = drmCommandWriteRead(bo->dev->fd, DRM_ETNAVIV_GEM_INFO,
 			&req, sizeof(req));
 	if (ret) {
 		return ret;

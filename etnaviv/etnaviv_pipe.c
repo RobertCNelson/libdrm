@@ -94,7 +94,7 @@ int etna_pipe_get_param(struct etna_pipe *pipe,
 int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp)
 {
 	struct etna_device *dev = pipe->dev;
-	struct drm_vivante_wait_fence req = {
+	struct drm_etnaviv_wait_fence req = {
 			.pipe = pipe->id,
 			.fence = timestamp,
 	};
@@ -102,7 +102,7 @@ int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp)
 
 	get_abs_timeout(&req.timeout, 5000);
 
-	ret = drmCommandWrite(dev->fd, DRM_VIVANTE_WAIT_FENCE, &req, sizeof(req));
+	ret = drmCommandWrite(dev->fd, DRM_ETNAVIV_WAIT_FENCE, &req, sizeof(req));
 	if (ret) {
 		ERROR_MSG("wait-fence failed! %d (%s)", ret, strerror(errno));
 		return ret;
@@ -118,13 +118,13 @@ void etna_pipe_del(struct etna_pipe *pipe)
 
 static uint64_t get_param(struct etna_device *dev, uint32_t pipe, uint32_t param)
 {
-	struct drm_vivante_param req = {
+	struct drm_etnaviv_param req = {
 			.pipe = pipe,
 			.param = param,
 	};
 	int ret;
 
-	ret = drmCommandWriteRead(dev->fd, DRM_VIVANTE_GET_PARAM, &req, sizeof(req));
+	ret = drmCommandWriteRead(dev->fd, DRM_ETNAVIV_GET_PARAM, &req, sizeof(req));
 	if (ret) {
 		ERROR_MSG("get-param failed! %d (%s)", ret, strerror(errno));
 		return 0;
@@ -136,9 +136,9 @@ static uint64_t get_param(struct etna_device *dev, uint32_t pipe, uint32_t param
 struct etna_pipe * etna_pipe_new(struct etna_device *dev, enum etna_pipe_id id)
 {
 	static const uint32_t pipe_id[] = {
-			[ETNA_PIPE_3D] = VIVANTE_PIPE_3D,
-			[ETNA_PIPE_2D] = VIVANTE_PIPE_2D,
-			[ETNA_PIPE_VG] = VIVANTE_PIPE_VG,
+			[ETNA_PIPE_3D] = ETNA_PIPE_3D,
+			[ETNA_PIPE_2D] = ETNA_PIPE_2D,
+			[ETNA_PIPE_VG] = ETNA_PIPE_VG,
 	};
 	struct etna_pipe *pipe = NULL;
 
@@ -152,12 +152,12 @@ struct etna_pipe * etna_pipe_new(struct etna_device *dev, enum etna_pipe_id id)
 	pipe->dev = dev;
 
 	/* get specs from kernel space */
-	pipe->specs.model    	= get_param(dev, pipe_id[id], VIVANTE_PARAM_GPU_MODEL);
-	pipe->specs.revision 	= get_param(dev, pipe_id[id], VIVANTE_PARAM_GPU_REVISION);
-	pipe->specs.features[0] = get_param(dev, pipe_id[id], VIVANTE_PARAM_GPU_FEATURES_0);
-	pipe->specs.features[1] = get_param(dev, pipe_id[id], VIVANTE_PARAM_GPU_FEATURES_1);
-	pipe->specs.features[2] = get_param(dev, pipe_id[id], VIVANTE_PARAM_GPU_FEATURES_2);
-	pipe->specs.features[3] = get_param(dev, pipe_id[id], VIVANTE_PARAM_GPU_FEATURES_3);
+	pipe->specs.model    	= get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_MODEL);
+	pipe->specs.revision 	= get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_REVISION);
+	pipe->specs.features[0] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_0);
+	pipe->specs.features[1] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_1);
+	pipe->specs.features[2] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_2);
+	pipe->specs.features[3] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_3);
 	pipe->specs.stream_count = get_param(dev, pipe_id[id], ETNA_GPU_STREAM_COUNT);
 	pipe->specs.register_max = get_param(dev, pipe_id[id], ETNA_GPU_REGISTER_MAX);
 	pipe->specs.thread_count = get_param(dev, pipe_id[id], ETNA_GPU_THREAD_COUNT);

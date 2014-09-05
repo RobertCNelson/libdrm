@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
 		goto fail;
 	}
 
-	bmp = etna_bo_new(dev, bmp_size, MSM_BO_WC);
+	bmp = etna_bo_new(dev, bmp_size, ETNA_BO_WC);
 	if (!bmp) {
 		ret = 4;
 		goto fail;

@@ -103,8 +103,8 @@ struct etna_bo {
 	atomic_t        refcnt;
 
 	uint64_t presumed;
-	uint32_t indexp1[VIVANTE_MAX_PIPES]; /* index plus 1 */
-	struct list_head list[VIVANTE_MAX_PIPES];
+	uint32_t indexp1[ETNA_MAX_PIPES]; /* index plus 1 */
+	struct list_head list[ETNA_MAX_PIPES];
 };
 
 struct etna_pipe {
@@ -127,15 +127,15 @@ struct etna_cmd_stream {
 	uint32_t last_timestamp;
 
 	/* bo's table: */
-	struct drm_vivante_gem_submit_bo *bos;
+	struct drm_etnaviv_gem_submit_bo *bos;
 	uint32_t nr_bos, max_bos;
 
 	/* cmd's table: */
-	struct drm_vivante_gem_submit_cmd *cmds;
+	struct drm_etnaviv_gem_submit_cmd *cmds;
 	uint32_t nr_cmds, max_cmds;
 
 	/* reloc's table: */
-	struct drm_vivante_gem_submit_reloc *relocs;
+	struct drm_etnaviv_gem_submit_reloc *relocs;
 	uint32_t nr_relocs, max_relocs;
 };
 
@@ -160,7 +160,7 @@ struct etna_cmd_stream {
 #define U642VOID(x) ((void *)(unsigned long)(x))
 #define VOID2U64(x) ((uint64_t)(unsigned long)(x))
 
-static inline void get_abs_timeout(struct drm_vivante_timespec *tv, uint32_t ms)
+static inline void get_abs_timeout(struct drm_etnaviv_timespec *tv, uint32_t ms)
 {
 	struct timespec t;
 	uint32_t s = ms / 1000;
