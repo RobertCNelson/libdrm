@@ -29,7 +29,6 @@
 int etna_pipe_get_param(struct etna_pipe *pipe,
 		enum etna_param_id param, uint64_t *value)
 {
-
 	switch(param) {
 	case ETNA_GPU_MODEL:
 		*value = pipe->specs.model;
@@ -135,11 +134,6 @@ static uint64_t get_param(struct etna_device *dev, uint32_t pipe, uint32_t param
 
 struct etna_pipe * etna_pipe_new(struct etna_device *dev, enum etna_pipe_id id)
 {
-	static const uint32_t pipe_id[] = {
-			[ETNA_PIPE_3D] = ETNA_PIPE_3D,
-			[ETNA_PIPE_2D] = ETNA_PIPE_2D,
-			[ETNA_PIPE_VG] = ETNA_PIPE_VG,
-	};
 	struct etna_pipe *pipe = NULL;
 
 	pipe = calloc(1, sizeof(*pipe));
@@ -148,26 +142,26 @@ struct etna_pipe * etna_pipe_new(struct etna_device *dev, enum etna_pipe_id id)
 		goto fail;
 	}
 
-	pipe->id = pipe_id[id];
+	pipe->id = id;
 	pipe->dev = dev;
 
 	/* get specs from kernel space */
-	pipe->specs.model    	= get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_MODEL);
-	pipe->specs.revision 	= get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_REVISION);
-	pipe->specs.features[0] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_0);
-	pipe->specs.features[1] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_1);
-	pipe->specs.features[2] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_2);
-	pipe->specs.features[3] = get_param(dev, pipe_id[id], ETNAVIV_PARAM_GPU_FEATURES_3);
-	pipe->specs.stream_count = get_param(dev, pipe_id[id], ETNA_GPU_STREAM_COUNT);
-	pipe->specs.register_max = get_param(dev, pipe_id[id], ETNA_GPU_REGISTER_MAX);
-	pipe->specs.thread_count = get_param(dev, pipe_id[id], ETNA_GPU_THREAD_COUNT);
-	pipe->specs.vertex_cache_size = get_param(dev, pipe_id[id], ETNA_GPU_VERTEX_CACHE_SIZE);
-	pipe->specs.shader_core_count = get_param(dev, pipe_id[id], ETNA_GPU_SHADER_CORE_COUNT);
-	pipe->specs.pixel_pipes = get_param(dev, pipe_id[id], ETNA_GPU_PIXEL_PIPES);
-	pipe->specs.vertex_output_buffer_size = get_param(dev, pipe_id[id], ETNA_GPU_VERTEX_OUTPUT_BUFFER_SIZE);
-	pipe->specs.buffer_size = get_param(dev, pipe_id[id], ETNA_GPU_BUFFER_SIZE);
-	pipe->specs.instruction_count = get_param(dev, pipe_id[id], ETNA_GPU_INSTRUCTION_COUNT);
-	pipe->specs.num_constants = get_param(dev, pipe_id[id], ETNA_GPU_NUM_CONSTANTS);
+	pipe->specs.model    	= get_param(dev, id, ETNAVIV_PARAM_GPU_MODEL);
+	pipe->specs.revision 	= get_param(dev, id, ETNAVIV_PARAM_GPU_REVISION);
+	pipe->specs.features[0] = get_param(dev, id, ETNAVIV_PARAM_GPU_FEATURES_0);
+	pipe->specs.features[1] = get_param(dev, id, ETNAVIV_PARAM_GPU_FEATURES_1);
+	pipe->specs.features[2] = get_param(dev, id, ETNAVIV_PARAM_GPU_FEATURES_2);
+	pipe->specs.features[3] = get_param(dev, id, ETNAVIV_PARAM_GPU_FEATURES_3);
+	pipe->specs.stream_count = get_param(dev, id, ETNA_GPU_STREAM_COUNT);
+	pipe->specs.register_max = get_param(dev, id, ETNA_GPU_REGISTER_MAX);
+	pipe->specs.thread_count = get_param(dev, id, ETNA_GPU_THREAD_COUNT);
+	pipe->specs.vertex_cache_size = get_param(dev, id, ETNA_GPU_VERTEX_CACHE_SIZE);
+	pipe->specs.shader_core_count = get_param(dev, id, ETNA_GPU_SHADER_CORE_COUNT);
+	pipe->specs.pixel_pipes = get_param(dev, id, ETNA_GPU_PIXEL_PIPES);
+	pipe->specs.vertex_output_buffer_size = get_param(dev, id, ETNA_GPU_VERTEX_OUTPUT_BUFFER_SIZE);
+	pipe->specs.buffer_size = get_param(dev, id, ETNA_GPU_BUFFER_SIZE);
+	pipe->specs.instruction_count = get_param(dev, id, ETNA_GPU_INSTRUCTION_COUNT);
+	pipe->specs.num_constants = get_param(dev, id, ETNA_GPU_NUM_CONSTANTS);
 
 
 	if (!pipe->specs.model)
