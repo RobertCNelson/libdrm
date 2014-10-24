@@ -138,24 +138,11 @@ struct drm_etnaviv_gem_submit_reloc {
 	uint64_t reloc_offset;   /* in, offset from start of reloc_bo */
 };
 
-/* submit-types:
- *   BUF - this cmd buffer is executed normally.
- *   IB_TARGET_BUF - this cmd buffer is an IB target.  Reloc's are
- *      processed normally, but the kernel does not setup an IB to
- *      this buffer in the first-level ringbuffer
- *   CTX_RESTORE_BUF - only executed if there has been a GPU context
- *      switch since the last SUBMIT ioctl
- */
-#define ETNA_SUBMIT_CMD_BUF             0x0001
-#define ETNA_SUBMIT_CMD_IB_TARGET_BUF   0x0002
-#define ETNA_SUBMIT_CMD_CTX_RESTORE_BUF 0x0003
 struct drm_etnaviv_gem_submit_cmd {
-	uint32_t type;           /* in, one of ETNA_SUBMIT_CMD_x */
 	uint32_t submit_idx;     /* in, index of submit_bo cmdstream buffer */
-	uint32_t submit_offset;  /* in, offset into submit_bo */
 	uint32_t size;           /* in, cmdstream size */
-	uint32_t pad;
 	uint32_t nr_relocs;      /* in, number of submit_reloc's */
+	uint32_t pad;
 	uint64_t __user relocs;  /* in, ptr to array of submit_reloc's */
 };
 
@@ -186,9 +173,9 @@ struct drm_etnaviv_gem_submit {
 	uint32_t pipe;           /* in, ETNA_PIPE_x */
 	uint32_t fence;          /* out */
 	uint32_t nr_bos;         /* in, number of submit_bo's */
-	uint32_t nr_cmds;        /* in, number of submit_cmd's */
+	uint32_t pad;
+	uint64_t __user cmd;     /* in, ptr to submit_cmd */
 	uint64_t __user bos;     /* in, ptr to array of submit_bo's */
-	uint64_t __user cmds;    /* in, ptr to array of submit_cmd's */
 };
 
 /* The normal way to synchronize with the GPU is just to CPU_PREP on

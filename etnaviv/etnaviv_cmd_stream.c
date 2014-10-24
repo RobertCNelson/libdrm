@@ -173,20 +173,14 @@ void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
 			.pipe = stream->pipe->id,
 	};
 
-	/* TODO: we only support _ONE_ cmd per submit ioctl for now. This makes
-	 *       things simpler. */
 	idx = APPEND(stream, cmds);
 	cmd = &stream->cmds[idx];
-	cmd->type = ETNA_SUBMIT_CMD_BUF;
 	cmd->submit_idx = bo2idx(stream, stream->stream[stream->current_stream], ETNA_RELOC_READ);
-	cmd->submit_offset = 0;
 	cmd->size = stream->offset * 4; /* in bytes */
 	cmd->relocs = VOID2U64(stream->relocs);
 	cmd->nr_relocs = stream->nr_relocs;
-	cmd->pad = 0;
 
-	req.cmds = VOID2U64(cmd);
-	req.nr_cmds = stream->nr_cmds;
+	req.cmd = VOID2U64(cmd);
 	req.bos = VOID2U64(stream->bos);
 	req.nr_bos = stream->nr_bos;
 
