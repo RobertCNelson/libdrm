@@ -105,8 +105,6 @@ static void switch_to_next_buffer(struct etna_cmd_stream *stream)
 {
 	int cmd_steam_idx = (stream->current_stream + 1) % NUM_CMD_STREAMS;
 
-	etna_cmd_stream_flush(stream);
-
 	stream->current_stream = cmd_steam_idx;
 	stream->offset = 0;
 	stream->cmd = stream->stream[cmd_steam_idx]->map;
@@ -127,6 +125,7 @@ void etna_cmd_stream_reserve(struct etna_cmd_stream *stream, size_t n)
 		return;
 	}
 
+	etna_cmd_stream_flush(stream);
 	switch_to_next_buffer(stream);
 }
 
