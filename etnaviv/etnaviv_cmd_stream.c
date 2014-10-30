@@ -175,6 +175,9 @@ static void flush(struct etna_cmd_stream *stream)
 			.pipe = stream->pipe->id,
 	};
 
+	/* we are done with cpu access */
+	etna_bo_cpu_fini(stream->stream[stream->current_stream]);
+
 	idx = APPEND(stream, cmds);
 	cmd = &stream->cmds[idx];
 	cmd->submit_idx = bo2idx(stream, stream->stream[stream->current_stream], ETNA_RELOC_READ);
