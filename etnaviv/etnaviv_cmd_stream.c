@@ -165,7 +165,7 @@ static uint32_t bo2idx(struct etna_cmd_stream *stream, struct etna_bo *bo, uint3
 	return idx;
 }
 
-void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
+static void flush(struct etna_cmd_stream *stream)
 {
 	int ret, idx, id = stream->pipe->id;
 	struct etna_bo *etna_bo = NULL, *tmp;
@@ -202,10 +202,17 @@ void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
 	}
 }
 
+void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
+{
+	flush(stream);
+	switch_to_next_buffer(stream);
+}
+
 void etna_cmd_stream_finish(struct etna_cmd_stream *stream)
 {
-	etna_cmd_stream_flush(stream);
+	flush(stream);
 	etna_pipe_wait(stream->pipe, stream->last_timestamp);
+	switch_to_next_buffer(stream);
 }
 
 void etna_cmd_stream_reloc(struct etna_cmd_stream *stream, const struct etna_reloc *r)
