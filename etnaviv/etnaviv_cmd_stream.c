@@ -113,6 +113,9 @@ static void switch_to_next_buffer(struct etna_cmd_stream *stream)
 	stream->nr_bos = 0;
 	stream->nr_cmds = 0;
 	stream->nr_relocs = 0;
+
+	/* make sure we can access the new cmd stream bo */
+	etna_bo_cpu_prep(stream->stream[cmd_steam_idx], ETNA_PREP_WRITE);
 }
 
 void etna_cmd_stream_reserve(struct etna_cmd_stream *stream, size_t n)
