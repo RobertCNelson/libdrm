@@ -299,10 +299,24 @@ void * etna_bo_map(struct etna_bo *bo)
 
 int etna_bo_cpu_prep(struct etna_bo *bo, uint32_t op)
 {
-	return 0;
+	struct drm_etnaviv_gem_cpu_prep req = {
+			.handle = bo->handle,
+			.op = op,
+	};
+
+	get_abs_timeout(&req.timeout, 5000);
+
+	return drmCommandWrite(bo->dev->fd, DRM_ETNAVIV_GEM_CPU_PREP,
+			&req, sizeof(req));
 }
 
 void etna_bo_cpu_fini(struct etna_bo *bo)
 {
+	struct drm_etnaviv_gem_cpu_fini req = {
+			.handle = bo->handle,
+	};
+
+	drmCommandWrite(bo->dev->fd, DRM_ETNAVIV_GEM_CPU_FINI,
+			&req, sizeof(req));
 }
 
