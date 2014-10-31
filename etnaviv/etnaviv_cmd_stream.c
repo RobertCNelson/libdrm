@@ -60,6 +60,12 @@ struct etna_cmd_stream * etna_cmd_stream_new(struct etna_pipe *pipe)
 		goto fail;
 	}
 
+	stream->submit_cmd = calloc(1, sizeof(*stream->submit_cmd));
+	if (!stream->submit_cmd) {
+		ERROR_MSG("allocation failed");
+		goto fail;
+	}
+
 	for (i = 0; i < NUM_CMD_STREAMS; i++) {
 		void *tmp;
 		stream->stream[i] = etna_bo_new(pipe->dev, CMD_STREAM_SIZE, ETNA_BO_CMDSTREAM);
@@ -97,6 +103,7 @@ void etna_cmd_stream_del(struct etna_cmd_stream *stream)
 		etna_bo_del(stream->stream[i]);
 	}
 
+	free(stream->submit_cmd);
 	free(stream->relocs);
 	free(stream);
 }
@@ -109,7 +116,6 @@ static void switch_to_next_buffer(struct etna_cmd_stream *stream)
 	stream->offset = 0;
 	stream->cmd = stream->stream[cmd_steam_idx]->map;
 	stream->nr_bos = 0;
-	stream->nr_cmds = 0;
 	stream->nr_relocs = 0;
 
 	/* make sure we can access the new cmd stream bo */
@@ -167,7 +173,7 @@ static uint32_t bo2idx(struct etna_cmd_stream *stream, struct etna_bo *bo, uint3
 
 static void flush(struct etna_cmd_stream *stream)
 {
-	int ret, idx, id = stream->pipe->id;
+	int ret, id = stream->pipe->id;
 	struct etna_bo *etna_bo = NULL, *tmp;
 	struct drm_etnaviv_gem_submit_cmd *cmd = NULL;
 
@@ -178,8 +184,7 @@ static void flush(struct etna_cmd_stream *stream)
 	/* we are done with cpu access */
 	etna_bo_cpu_fini(stream->stream[stream->current_stream]);
 
-	idx = APPEND(stream, cmds);
-	cmd = &stream->cmds[idx];
+	cmd = stream->submit_cmd;
 	cmd->submit_idx = bo2idx(stream, stream->stream[stream->current_stream], ETNA_RELOC_READ);
 	cmd->size = stream->offset * 4; /* in bytes */
 	cmd->relocs = VOID2U64(stream->relocs);

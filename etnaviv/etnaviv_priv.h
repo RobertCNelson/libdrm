@@ -126,13 +126,11 @@ struct etna_cmd_stream {
 	struct list_head submit_list;
 	uint32_t last_timestamp;
 
+	struct drm_etnaviv_gem_submit_cmd *submit_cmd;
+
 	/* bo's table: */
 	struct drm_etnaviv_gem_submit_bo *bos;
 	uint32_t nr_bos, max_bos;
-
-	/* cmd's table: */
-	struct drm_etnaviv_gem_submit_cmd *cmds;
-	uint32_t nr_cmds, max_cmds;
 
 	/* reloc's table: */
 	struct drm_etnaviv_gem_submit_reloc *relocs;
