@@ -155,7 +155,6 @@ static uint32_t bo2idx(struct etna_cmd_stream *stream, struct etna_bo *bo, uint3
 		idx = APPEND(stream, bos);
 		stream->bos[idx].flags = 0;
 		stream->bos[idx].handle = bo->handle;
-		stream->bos[idx].presumed = bo->presumed;
 		bo->indexp1[id] = idx + 1;
 
 		assert(LIST_IS_EMPTY(list));
@@ -227,7 +226,7 @@ void etna_cmd_stream_reloc(struct etna_cmd_stream *stream, const struct etna_rel
 {
 	struct drm_etnaviv_gem_submit_reloc *reloc;
 	uint32_t idx = APPEND(stream, relocs);
-	uint32_t addr;
+	uint32_t addr = 0;
 
 	reloc = &stream->relocs[idx];
 
@@ -237,7 +236,6 @@ void etna_cmd_stream_reloc(struct etna_cmd_stream *stream, const struct etna_rel
 	reloc->shift = r->shift;
 	reloc->submit_offset = stream->offset * 4; /* in bytes */
 
-	addr = r->bo->presumed;
 	if (r->shift < 0)
 		addr >>= -r->shift;
 	else

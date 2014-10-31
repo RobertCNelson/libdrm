@@ -102,7 +102,6 @@ struct etna_bo {
 	int             fd;             /* dmabuf handle */
 	atomic_t        refcnt;
 
-	uint64_t presumed;
 	uint32_t indexp1[ETNA_MAX_PIPES]; /* index plus 1 */
 	struct list_head list[ETNA_MAX_PIPES];
 };
