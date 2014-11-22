@@ -83,6 +83,7 @@ struct drm_etnaviv_param {
  */
 
 #define ETNA_BO_CMDSTREAM    0x00000001
+#define ETNA_BO_SCANOUT      0x00000002
 #define ETNA_BO_CACHE_MASK   0x000f0000
 /* cache modes */
 #define ETNA_BO_CACHED       0x00010000
@@ -141,8 +142,8 @@ struct drm_etnaviv_gem_submit_reloc {
 struct drm_etnaviv_gem_submit_cmd {
 	uint32_t submit_idx;     /* in, index of submit_bo cmdstream buffer */
 	uint32_t size;           /* in, cmdstream size */
-	uint32_t nr_relocs;      /* in, number of submit_reloc's */
 	uint32_t pad;
+	uint32_t nr_relocs;      /* in, number of submit_reloc's */
 	uint64_t __user relocs;  /* in, ptr to array of submit_reloc's */
 };
 
