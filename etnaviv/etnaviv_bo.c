@@ -168,12 +168,11 @@ out_unlock:
  */
 struct etna_bo * etna_bo_from_dmabuf(struct etna_device *dev, int fd)
 {
-#if 0
 	struct etna_bo *bo = NULL;
 	struct drm_prime_handle req = {
 			.fd = fd,
 	};
-	int ret;
+	int ret, size;
 
 	pthread_mutex_lock(&table_lock);
 
@@ -182,9 +181,12 @@ struct etna_bo * etna_bo_from_dmabuf(struct etna_device *dev, int fd)
 		goto fail;
 	}
 
+	/* hmm, would be nice if we had a way to figure out the size.. */
+	size = 0;
+
 	bo = lookup_bo(dev, req.handle);
 	if (!bo) {
-		bo = bo_from_handle(dev, req.handle);
+		bo = bo_from_handle(dev, size, req.handle);
 	}
 
 	pthread_mutex_unlock(&table_lock);
@@ -194,7 +196,6 @@ struct etna_bo * etna_bo_from_dmabuf(struct etna_device *dev, int fd)
 fail:
 	pthread_mutex_unlock(&table_lock);
 	free(bo);
-#endif
 	return NULL;
 }
 
