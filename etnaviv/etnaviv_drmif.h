@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Etnaviv Project
+ * Copyright (C) 2014-2015 Etnaviv Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -124,16 +124,16 @@ void etna_bo_cpu_fini(struct etna_bo *bo);
  */
 
 struct etna_cmd_stream * etna_cmd_stream_new(struct etna_pipe *pipe);
-void etna_cmd_stream_del(struct etna_cmd_stream *ctx);
-void etna_cmd_stream_reserve(struct etna_cmd_stream *ctx, size_t n);
-void etna_cmd_stream_emit(struct etna_cmd_stream *ctx, uint32_t data);
+void etna_cmd_stream_del(struct etna_cmd_stream *stream);
+void etna_cmd_stream_reserve(struct etna_cmd_stream *stream, size_t n);
+void etna_cmd_stream_emit(struct etna_cmd_stream *stream, uint32_t data);
 uint32_t etna_cmd_stream_get(struct etna_cmd_stream *stream, uint32_t offset);
 void etna_cmd_stream_set(struct etna_cmd_stream *stream, uint32_t offset,
 		uint32_t data);
 uint32_t etna_cmd_stream_offset(struct etna_cmd_stream *stream);
-uint32_t etna_cmd_stream_timestamp(struct etna_cmd_stream *ctx);
-void etna_cmd_stream_flush(struct etna_cmd_stream *ctx);
-void etna_cmd_stream_finish(struct etna_cmd_stream *ctx);
+uint32_t etna_cmd_stream_timestamp(struct etna_cmd_stream *stream);
+void etna_cmd_stream_flush(struct etna_cmd_stream *stream);
+void etna_cmd_stream_finish(struct etna_cmd_stream *stream);
 
 struct etna_reloc {
 	struct etna_bo *bo;
@@ -145,6 +145,6 @@ struct etna_reloc {
 	int32_t  shift;
 };
 
-void etna_cmd_stream_reloc(struct etna_cmd_stream *ring, const struct etna_reloc *r);
+void etna_cmd_stream_reloc(struct etna_cmd_stream *stream, const struct etna_reloc *r);
 
-#endif /* FREEDRENO_DRMIF_H_ */
+#endif /* ETNAVIV_DRMIF_H_ */

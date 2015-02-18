@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Etnaviv Project
+ * Copyright (C) 2014-2015 Etnaviv Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -149,7 +149,8 @@ uint32_t etna_cmd_stream_get(struct etna_cmd_stream *stream, uint32_t offset)
 	return stream->cmd[offset];
 }
 
-void etna_cmd_stream_set(struct etna_cmd_stream *stream, uint32_t offset, uint32_t data)
+void etna_cmd_stream_set(struct etna_cmd_stream *stream, uint32_t offset,
+		uint32_t data)
 {
 	stream->cmd[offset] = data;
 }
@@ -165,7 +166,8 @@ uint32_t etna_cmd_stream_timestamp(struct etna_cmd_stream *stream)
 }
 
 /* add (if needed) bo, return idx: */
-static uint32_t bo2idx(struct etna_cmd_stream *stream, struct etna_bo *bo, uint32_t flags)
+static uint32_t bo2idx(struct etna_cmd_stream *stream, struct etna_bo *bo,
+		uint32_t flags)
 {
 	int id = stream->pipe->id;
 	uint32_t idx;
