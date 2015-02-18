@@ -144,6 +144,11 @@ void etna_cmd_stream_emit(struct etna_cmd_stream *stream, uint32_t data)
 	stream->cmd[stream->offset++] = data;
 }
 
+uint32_t etna_cmd_stream_offset(struct etna_cmd_stream *stream)
+{
+	return stream->offset;
+}
+
 uint32_t etna_cmd_stream_timestamp(struct etna_cmd_stream *stream)
 {
 	return stream->last_timestamp;
