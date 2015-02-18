@@ -127,6 +127,9 @@ struct etna_cmd_stream * etna_cmd_stream_new(struct etna_pipe *pipe);
 void etna_cmd_stream_del(struct etna_cmd_stream *ctx);
 void etna_cmd_stream_reserve(struct etna_cmd_stream *ctx, size_t n);
 void etna_cmd_stream_emit(struct etna_cmd_stream *ctx, uint32_t data);
+uint32_t etna_cmd_stream_get(struct etna_cmd_stream *stream, uint32_t offset);
+void etna_cmd_stream_set(struct etna_cmd_stream *stream, uint32_t offset,
+		uint32_t data);
 uint32_t etna_cmd_stream_offset(struct etna_cmd_stream *stream);
 uint32_t etna_cmd_stream_timestamp(struct etna_cmd_stream *ctx);
 void etna_cmd_stream_flush(struct etna_cmd_stream *ctx);
