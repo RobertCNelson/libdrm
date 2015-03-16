@@ -93,7 +93,7 @@ struct etna_pipe * etna_pipe_new(struct etna_device *dev, enum etna_pipe_id id);
 void etna_pipe_del(struct etna_pipe *pipe);
 int etna_pipe_get_param(struct etna_pipe *pipe, enum etna_param_id param,
 		uint64_t *value);
-int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp);
+int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp, uint32_t ms);
 
 
 /* buffer-object functions:

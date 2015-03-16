@@ -94,7 +94,7 @@ int etna_pipe_get_param(struct etna_pipe *pipe,
 	return 0;
 }
 
-int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp)
+int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp, uint32_t ms)
 {
 	struct etna_device *dev = pipe->dev;
 	struct drm_etnaviv_wait_fence req = {
@@ -103,7 +103,7 @@ int etna_pipe_wait(struct etna_pipe *pipe, uint32_t timestamp)
 	};
 	int ret;
 
-	get_abs_timeout(&req.timeout, 5000);
+	get_abs_timeout(&req.timeout, ms);
 
 	ret = drmCommandWrite(dev->fd, DRM_ETNAVIV_WAIT_FENCE, &req, sizeof(req));
 	if (ret) {

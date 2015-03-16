@@ -239,7 +239,7 @@ void etna_cmd_stream_flush(struct etna_cmd_stream *stream)
 void etna_cmd_stream_finish(struct etna_cmd_stream *stream)
 {
 	flush(stream);
-	etna_pipe_wait(stream->pipe, stream->last_timestamp);
+	etna_pipe_wait(stream->pipe, stream->last_timestamp, 5000);
 	switch_to_next_buffer(stream);
 }
 
